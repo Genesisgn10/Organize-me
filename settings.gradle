@@ -1,0 +1,2 @@
+rootProject.name='Organize-me'
+include ':app'

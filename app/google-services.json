@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "270786151933",
+    "firebase_url": "https://organizi-me.firebaseio.com",
+    "project_id": "organizi-me",
+    "storage_bucket": "organizi-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270786151933:android:c99606b3946e08c0c04594",
+        "android_client_info": {
+          "package_name": "com.example.organize_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270786151933-62grdet1928sitgstdaggg5cb6stocn4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.organize_me",
+            "certificate_hash": "b7e241473c6d6f7aa67e6f2abb0197dfda6d690e"
+          }
+        },
+        {
+          "client_id": "270786151933-ii9adc3mffil6bp87n607ukoq3h9kra9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGIjlclVN40LM0l5QjYmLOzVBSyUbhzXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270786151933-ii9adc3mffil6bp87n607ukoq3h9kra9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
