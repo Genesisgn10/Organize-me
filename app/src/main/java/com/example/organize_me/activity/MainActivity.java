@@ -1,16 +1,12 @@
-package com.example.organize_me;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.organize_me.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.organize_me.activity.CadastroActivity;
-import com.example.organize_me.activity.LoginActivity;
+import com.example.organize_me.R;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
-import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 public class MainActivity extends IntroActivity {
 
