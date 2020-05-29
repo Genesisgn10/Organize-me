@@ -22,7 +22,6 @@ public class MainActivity extends IntroActivity {
 
         //conf iniciais
         verificarUsuarioLogado();
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         setButtonBackVisible(false);
         setButtonNextVisible(false);
 
@@ -75,7 +74,7 @@ public class MainActivity extends IntroActivity {
     }
 
     private void verificarUsuarioLogado(){
-
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         if ( autenticacao.getCurrentUser() != null ){
             abrirTelaPrincipal();
         }
