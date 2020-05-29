@@ -16,10 +16,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class CadastroActivity extends AppCompatActivity {
 
-    private EditText campoNome, campoEmail, campoSenha;
+    private EditText campoNome, campoEmail, campoSenha, campoSenha2;
     private Button botaoCadastrar;
     private FirebaseAuth autenticacao;
     private Usuario usuario;
@@ -37,7 +40,6 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validarCampos();
-
             }
         });
 
@@ -48,6 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
         campoNome = findViewById(R.id.editTextCadastroNome);
         campoEmail = findViewById(R.id.editTextCadastroEmail);
         campoSenha = findViewById(R.id.editTextCadastroSenha);
+        campoSenha2 = findViewById(R.id.editTextCadastroSenha2);
 
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
     }
@@ -57,6 +60,8 @@ public class CadastroActivity extends AppCompatActivity {
         String nome = campoNome.getText().toString();
         String email = campoEmail.getText().toString();
         String senha = campoSenha.getText().toString();
+        String senha2 = campoSenha.getText().toString();
+
 
         if(nome.isEmpty()){
             campoNome.setError("Campo obrigatório");
@@ -73,15 +78,21 @@ public class CadastroActivity extends AppCompatActivity {
                     campoSenha.setFocusable(true);
                     campoSenha.requestFocus();
                 }else{
-                    usuario = new Usuario();
-                    usuario.setEmail(email);
-                    usuario.setSenha(senha);
-                    usuario.setNome(nome);
-                    cadastrarUsuario();
+
+                    if( !senha.equals(senha2) ){
+                        campoSenha2.setError("senhas não são iguais");
+                        campoSenha2.setFocusable(true);
+                        campoSenha2.requestFocus();
+                    }else{
+                        usuario = new Usuario();
+                        usuario.setEmail(email);
+                        usuario.setSenha(senha);
+                        usuario.setNome(nome);
+                        cadastrarUsuario();
+                    }
                 }
             }
         }
-
     }
 
     private void cadastrarUsuario(){
@@ -92,19 +103,35 @@ public class CadastroActivity extends AppCompatActivity {
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if( task.isSuccessful() ){
                     Toast.makeText(CadastroActivity.this,
                             "Sucesso ao cadastrar usuário",
                             Toast.LENGTH_SHORT).show();
+                    finish();
                 }else{
+
+                    String excecao = "";
+
+                    try {
+
+                        throw task.getException();
+
+                    }catch( FirebaseAuthWeakPasswordException e){
+                        excecao = "Digite uma senha mais forte!";
+                    }catch ( FirebaseAuthInvalidCredentialsException e){
+                        excecao = "Por favor, digite um e-mail válido!";
+                    }catch ( FirebaseAuthUserCollisionException e){
+                        excecao = "Esse e-mail já está cadastrada!";
+                    }catch ( Exception e ){
+                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(CadastroActivity.this,
-                            "Erro ao cadastrar usuário",
+                            excecao,
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
     }
-
 }
