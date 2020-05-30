@@ -67,19 +67,24 @@
         fab:menu_fab_label="Menu">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/menu_Despesas"
+            fab:menu_colorNormal="@color/colorPrimaryDarkDespesa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_white_24dp"
             fab:fab_size="mini"
-            fab:fab_label="Despesa" />
+            android:onClick="adicionarDespesa"
+            fab:fab_label="Despesa"
+            />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab2"
+            android:id="@+id/menu_Receitas"
+            fab:menu_colorNormal="@color/colorPrimaryReceita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_white_24dp"
             fab:fab_size="mini"
+            android:onClick="adicionarReceita"
             fab:fab_label="Receita" />
 
     </com.github.clans.fab.FloatingActionMenu>
