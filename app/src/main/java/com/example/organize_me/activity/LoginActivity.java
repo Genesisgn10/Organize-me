@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.organize_me.PrincipalActivity;
 import com.example.organize_me.R;
 import com.example.organize_me.config.ConfiguracaoFirebase;
 import com.example.organize_me.model.Usuario;

@@ -1,7 +1,9 @@
-package com.example.organize_me;
+package com.example.organize_me.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.organize_me.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -33,11 +35,11 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     public void adicionarDespesa(View view){
-
+        startActivity(new Intent(PrincipalActivity.this, DespesasActivity.class));
     }
 
     public void adicionarReceita(View view){
-
+        startActivity(new Intent(PrincipalActivity.this, ReceitasActivity.class));
     }
 
 }

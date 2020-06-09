@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.organize_me.PrincipalActivity;
 import com.example.organize_me.R;
 import com.example.organize_me.config.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;

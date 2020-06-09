@@ -7,6 +7,7 @@
     <color name="black">#000000</color>
     <color name="cinza">#4E4E4E</color>
     <color name="branco">#FFFFFF</color>
+    <color name="menu">#FF706A</color>
 
     <!-- cores despesas!-->
     <color name="colorPrimaryDespesa">#FF706A</color>
