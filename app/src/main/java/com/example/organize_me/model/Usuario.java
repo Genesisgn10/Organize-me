@@ -1,8 +1,12 @@
 package com.example.organize_me.model;
 
+import com.example.organize_me.config.ConfiguracaoFirebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+
 public class Usuario {
 
-    private String id;
+    private String idUsuario;
     private String nome;
     private String email;
     private String senha;
@@ -11,12 +15,21 @@ public class Usuario {
 
     }
 
+    public void salvar(){
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+        firebase.child("usuarios")
+                .child( this.idUsuario )
+                .setValue( this );
+    }
+
+
+    @Exclude
     public String getId() {
-        return id;
+        return idUsuario;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.idUsuario = id;
     }
 
     public String getNome() {
@@ -35,6 +48,7 @@ public class Usuario {
         this.email = email;
     }
 
+    @Exclude
     public String getSenha() {
         return senha;
     }

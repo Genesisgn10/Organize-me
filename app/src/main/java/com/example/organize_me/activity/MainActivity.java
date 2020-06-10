@@ -19,6 +19,8 @@ public class MainActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
         ///setContentView(R.layout.activity_main);
 
+
+
         //conf iniciais
         verificarUsuarioLogado();
         setButtonBackVisible(false);
@@ -74,6 +76,7 @@ public class MainActivity extends IntroActivity {
 
     private void verificarUsuarioLogado(){
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        //autenticacao.signOut();
         if ( autenticacao.getCurrentUser() != null ){
             abrirTelaPrincipal();
         }
