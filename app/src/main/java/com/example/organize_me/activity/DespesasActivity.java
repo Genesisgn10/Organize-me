@@ -3,18 +3,20 @@ package com.example.organize_me.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.organize_me.R;
 import com.example.organize_me.helper.DateUtil;
-import com.google.android.gms.common.util.DataUtils;
+
+import com.example.organize_me.model.Movimentacao;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class DespesasActivity extends AppCompatActivity {
 
     private TextInputEditText campoData, campoCategoria, campoDescricao;
     private EditText campoValor;
+    private Movimentacao movimentacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,20 @@ public class DespesasActivity extends AppCompatActivity {
         campoCategoria = findViewById(R.id.editCategoria);
         campoDescricao = findViewById(R.id.editDescricao);
         campoValor = findViewById(R.id.editValor);
+    }
+
+    public void salvarDespesas(View view){
+
+        movimentacao = new Movimentacao();
+
+        String data = campoData.getText().toString();
+
+        movimentacao.setValor( Double.parseDouble(campoValor.getText().toString()) );
+        movimentacao.setCategoria( campoCategoria.getText().toString() );
+        movimentacao.setDescricao( campoDescricao.getText().toString() );
+        movimentacao.setData( data );
+        movimentacao.setTipo( "d" );
+        movimentacao.salvar( data );
     }
 
 }
