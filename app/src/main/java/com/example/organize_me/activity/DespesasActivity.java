@@ -3,6 +3,7 @@ package com.example.organize_me.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -71,6 +72,12 @@ public class DespesasActivity extends AppCompatActivity {
             atualizarDespesa( despesaAtualizada );
 
             movimentacao.salvar( data );
+
+            Toast.makeText(DespesasActivity.this,
+                    "Despesa adicionada!",
+                    Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(DespesasActivity.this, PrincipalActivity.class));
+            finish();
         }
     }
 
@@ -134,7 +141,7 @@ public class DespesasActivity extends AppCompatActivity {
         });
     }
 
-    public void atualizarDespesa(Double despesa){
+    private void atualizarDespesa(Double despesa){
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
         DatabaseReference usuarioRef = fiDatabaseReference.child("usuarios")
