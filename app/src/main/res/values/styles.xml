@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
+    <!-- Base application theme. -->
+    <style name="AppCadastro" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/cinza</item>
+        <item name="colorPrimaryDark">@color/black</item>black
+        <item name="colorAccent">@color/black</item>
+    </style>
+
     <!-- Tema aplicado nas despesas. -->
     <style name="despesaTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -45,5 +53,14 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="principal.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="principal.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="principal.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

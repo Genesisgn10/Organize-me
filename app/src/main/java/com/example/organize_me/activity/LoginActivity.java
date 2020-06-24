@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_login);
 
         //Conf inicial
@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 campoSenha.setFocusable(true);
                 campoSenha.requestFocus();
             }else{
+                usuario = new Usuario();
                 usuario.setEmail(email);
                 usuario.setSenha(senha);
                 loginUsuario();
