@@ -7,8 +7,6 @@ import com.example.organize_me.R;
 import com.example.organize_me.config.ConfiguracaoFirebase;
 import com.example.organize_me.helper.Base64Custom;
 import com.example.organize_me.model.Usuario;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,11 +31,14 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
     private TextView textoSaudacao, textoSaldo;
-    private FirebaseAuth autenticacao =  ConfiguracaoFirebase.getFirebaseAutenticacao();
-    private DatabaseReference fiDatabaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoTotal = 0.0;
+
+    private FirebaseAuth autenticacao =  ConfiguracaoFirebase.getFirebaseAutenticacao();
+    private DatabaseReference fiDatabaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
+    private  DatabaseReference usuarioRef;
+    private ValueEventListener valueEventListenerUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class PrincipalActivity extends AppCompatActivity {
         textoSaudacao = findViewById(R.id.textSaudacao);
         textoSaldo = findViewById(R.id.textSaldo);
         configuraCalendarView();
-        recuperarResumo();
+
 
     }
 
@@ -98,10 +99,10 @@ public class PrincipalActivity extends AppCompatActivity {
     private void recuperarResumo(){
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
-        DatabaseReference usuarioRef = fiDatabaseReference.child("usuarios")
+        usuarioRef = fiDatabaseReference.child("usuarios")
                 .child(idUsuario);
 
-        usuarioRef.addValueEventListener(new ValueEventListener() {
+        valueEventListenerUser = usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -125,4 +126,15 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        usuarioRef.removeEventListener( valueEventListenerUser );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarResumo();
+    }
 }
