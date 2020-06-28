@@ -1,5 +1,6 @@
 package com.example.organize_me.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,8 +20,10 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -50,6 +54,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AdapterMovimentacao adapterMovimentacao;
     private List<Movimentacao> movimentacaos = new ArrayList<>();
+    private Movimentacao movimentacao;
     private DatabaseReference movimentacaoRef;
     private String mesAnoSelecionado;
 
@@ -67,6 +72,7 @@ public class PrincipalActivity extends AppCompatActivity {
         textoSaudacao = findViewById(R.id.textSaudacao);
         textoSaldo = findViewById(R.id.textSaldo);
         configuraCalendarView();
+        swipe();
 
         //Configurando adapter
         adapterMovimentacao = new AdapterMovimentacao(movimentacaos, this);
@@ -77,6 +83,72 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( adapterMovimentacao );
 
+    }
+
+    private void swipe(){
+
+        ItemTouchHelper.Callback itemTouach = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                excluirMovimentacao( viewHolder );
+            }
+        };
+
+        new ItemTouchHelper( itemTouach ).attachToRecyclerView( recyclerView );
+
+    }
+
+    private void excluirMovimentacao(final RecyclerView.ViewHolder viewHolder){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        //Configura AlertDialog
+        alertDialog.setTitle("Excluir Movimentação da Conta");
+        alertDialog.setMessage("Você tem certeza que deseja realmente excluir esse item?");
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int position = viewHolder.getAdapterPosition();
+                movimentacao = movimentacaos.get( position );
+
+                String emailUsuario = autenticacao.getCurrentUser().getEmail();
+                String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+                movimentacaoRef = firabaseRef.child("movimentacao")
+                                        .child( idUsuario )
+                                        .child( mesAnoSelecionado );
+
+                movimentacaoRef.child( movimentacao.getKey() ).removeValue();
+                adapterMovimentacao.notifyItemRemoved( position );
+                atualizarSaldo();
+
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(PrincipalActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                adapterMovimentacao.notifyDataSetChanged();
+            }
+        });
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
     }
 
     private void configuraCalendarView() {
@@ -130,12 +202,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
-        movimentacaoRef = firabaseRef.child("usuarios")
-                .child(idUsuario);
-
-        movimentacaoRef.child("movimentacao")
-                        .child( idUsuario )
-                        .child( mesAnoSelecionado );
+        movimentacaoRef = firabaseRef.child("movimentacao")
+                                     .child( idUsuario )
+                                     .child( mesAnoSelecionado );
 
         valueEventListenerMovimentacao = movimentacaoRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,6 +215,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 for( DataSnapshot dados: dataSnapshot.getChildren() ){
 
                     Movimentacao movimentacao = dados.getValue( Movimentacao.class );
+                    movimentacao.setKey( dados.getKey() );
                     movimentacaos.add( movimentacao );
 
                 }
@@ -158,6 +228,26 @@ public class PrincipalActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void atualizarSaldo(){
+
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+        usuarioRef = firabaseRef.child("usuarios")
+                .child(idUsuario);
+
+        if( movimentacao.getTipo().equals("r") ){
+            receitaTotal = receitaTotal - movimentacao.getValor();
+            usuarioRef.child("receitaTotal").setValue( receitaTotal );
+        }
+
+        if( movimentacao.getTipo().equals("d") ){
+            despesaTotal = despesaTotal - movimentacao.getValor();
+            usuarioRef.child("despesaTotal").setValue( receitaTotal );
+        }
+
 
     }
 

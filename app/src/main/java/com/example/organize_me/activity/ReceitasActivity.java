@@ -45,9 +45,9 @@ public class ReceitasActivity extends AppCompatActivity {
     }
 
     private void inicializarComponentes(){
-        campoData = findViewById(R.id.editDataReceita);
-        campoCategoria = findViewById(R.id.editCategoriaReceita);
-        campoDescricao = findViewById(R.id.editDescricaoReceita);
+        campoData = findViewById(R.id.campoDataRceita);
+        campoCategoria = findViewById(R.id.ediCategoriaReceita);
+        campoDescricao = findViewById(R.id.editDescReceita);
         campoValor = findViewById(R.id.editValorReceita);
     }
 
