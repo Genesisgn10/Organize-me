@@ -20,6 +20,9 @@ jobs:
 
     - name: Build APK
       run: ./gradlew assembleDebug
+      
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
 
     - name: Archive APK
       uses: actions/upload-artifact@v1
