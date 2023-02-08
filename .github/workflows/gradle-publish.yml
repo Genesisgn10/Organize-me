@@ -21,6 +21,9 @@ jobs:
     - name: Build APK
       run: ./gradlew assembleDebug
       
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
+      
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
